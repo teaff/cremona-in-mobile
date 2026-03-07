@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-mobile",
-    "slug": "app-mobile",
+    "name": "Cremona In",
+    "slug": "cremona-in",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,21 +10,32 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cremonain.appmobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.cremonain.appmobile",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "32b8bc0f-30ed-474b-9e57-01720bb56f12"
+      }
     }
   }
 }
