@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, Ticket, Briefcase, Heart, Settings } from 'lucide-react-native';
-import { EventsScreen } from '../screens/EventsScreen';
+import { EventsScreen } from '@/features/events/screens/EventsScreen';
 import { TicketsScreen } from '../screens/TicketsScreen';
 import { TravelScreen } from '../screens/TravelScreen';
 import { FavoritesScreen } from '../screens/FavoritesScreen';

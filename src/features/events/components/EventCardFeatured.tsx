@@ -4,10 +4,10 @@ import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { MapPin, Heart } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
-import { Event } from '../data/events.mock';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
-import { typography } from '../theme/typography';
+import { Event } from '@/data/events.mock';
+import { colors } from '@/theme/colors';
+import { spacing } from '@/theme/spacing';
+import { typography } from '@/theme/typography';
 
 interface EventCardFeaturedProps {
   event: Event;

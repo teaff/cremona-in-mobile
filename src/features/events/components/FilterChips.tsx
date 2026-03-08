@@ -10,9 +10,9 @@ import {
   Music,
   Palette,
 } from 'lucide-react-native';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
-import { typography } from '../theme/typography';
+import { colors } from '@/theme/colors';
+import { spacing } from '@/theme/spacing';
+import { typography } from '@/theme/typography';
 
 interface FilterCategory {
   id: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Onboarding, OnboardingStep } from '../components/ui/onboarding';
+import { Onboarding, OnboardingStep } from '@/components/ui/onboarding';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -15,7 +15,7 @@ import {
   QrCode,
 } from 'lucide-react-native';
 import { OnboardingImageGrid } from '../components/OnboardingImageGrid';
-import { colors } from '../theme/colors';
+import { colors } from '@/theme/colors';
 
 export const OnboardingScreen = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();

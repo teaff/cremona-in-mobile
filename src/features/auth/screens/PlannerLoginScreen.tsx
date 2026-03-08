@@ -19,7 +19,7 @@ import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
 import { useLanguage } from '@/context/LanguageContext';
 import { ArrowLeft } from 'lucide-react-native';
-import { LoginFooter } from '@/components/LoginFooter';
+import { LoginFooter } from '@/features/auth/components/LoginFooter';
 
 const { width } = Dimensions.get('window');
 
@@ -64,7 +64,7 @@ export const PlannerLoginScreen = () => {
               {/* Logo Section */}
               <View style={styles.logoContainer}>
                 <Image
-                  source={require('../../assets/logo_white_transparent.png')}
+                  source={require('../../../../assets/logo_white_transparent.png')}
                   style={styles.logo}
                   resizeMode="contain"
                 />

@@ -2,9 +2,9 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ScanBarcode, PieChart, Settings } from 'lucide-react-native';
 import { colors } from '@/theme/colors';
-import { PlannerHomeScreen } from '../screens/planner/PlannerHomeScreen';
-import { PlannerStatsScreen } from '../screens/planner/PlannerStatsScreen';
-import { PlannerSettingsScreen } from '../screens/planner/PlannerSettingsScreen';
+import { PlannerHomeScreen } from '@/features/planner/screens/PlannerHomeScreen';
+import { PlannerStatsScreen } from '@/features/planner/screens/PlannerStatsScreen';
+import { PlannerSettingsScreen } from '@/features/planner/screens/PlannerSettingsScreen';
 import { BottomNavBar } from '@/components/BottomNavBar';
 
 const Tab = createBottomTabNavigator();
@@ -56,5 +56,4 @@ export const PlannerTabNavigator = () => {
     </Tab.Navigator>
   );
 };
-
 

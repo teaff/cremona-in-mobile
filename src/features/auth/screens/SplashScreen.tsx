@@ -12,7 +12,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { colors } from '../theme/colors';
+import { colors } from '@/theme/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -86,7 +86,7 @@ export const SplashScreen = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <Image
-          source={require('../../assets/logo_white_transparent.png')}
+          source={require('../../../../assets/logo_white_transparent.png')}
           style={styles.logo}
           resizeMode="contain"
         />

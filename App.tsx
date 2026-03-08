@@ -6,12 +6,12 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TabNavigator } from './src/navigation/TabNavigator';
 import { PlannerTabNavigator } from './src/navigation/PlannerTabNavigator';
-import { OnboardingScreen } from './src/screens/OnboardingScreen';
-import { LoginScreen } from './src/screens/LoginScreen';
-import { EventDetailsScreen } from './src/screens/EventDetailsScreen';
-import { PlannerLoginScreen } from './src/screens/PlannerLoginScreen';
-import { PlannerEventParticipantsScreen } from './src/screens/planner/PlannerEventParticipantsScreen';
-import { SplashScreen as CustomSplashScreen } from './src/screens/SplashScreen';
+import { OnboardingScreen } from './src/features/auth/screens/OnboardingScreen';
+import { LoginScreen } from './src/features/auth/screens/LoginScreen';
+import { EventDetailsScreen } from './src/features/events/screens/EventDetailsScreen';
+import { PlannerLoginScreen } from './src/features/auth/screens/PlannerLoginScreen';
+import { PlannerEventParticipantsScreen } from './src/features/planner/screens/PlannerEventParticipantsScreen';
+import { SplashScreen as CustomSplashScreen } from './src/features/auth/screens/SplashScreen';
 import { colors } from './src/theme/colors';
 import { NAV_THEME } from './src/theme/theme-provider';
 import { StatusBar } from 'expo-status-bar';
