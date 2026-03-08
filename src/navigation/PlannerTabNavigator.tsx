@@ -15,6 +15,9 @@ export const PlannerTabNavigator = () => {
       tabBar={(props) => <BottomNavBar {...props} />}
       screenOptions={{
         headerShown: false,
+        sceneStyle: {
+          backgroundColor: colors.background,
+        },
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.text.primary,
         tabBarInactiveTintColor: colors.text.secondary,
@@ -56,4 +59,3 @@ export const PlannerTabNavigator = () => {
     </Tab.Navigator>
   );
 };
-
