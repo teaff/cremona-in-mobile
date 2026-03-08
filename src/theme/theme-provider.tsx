@@ -46,7 +46,7 @@ type Props = {
 };
 
 export const ThemeProvider = ({ children }: Props) => {
-  const { colorScheme } = useColorScheme();
+  const colorScheme = useColorScheme();
   return (
     <RNThemeProvider
       value={colorScheme === 'dark' ? NAV_THEME.dark : NAV_THEME.light}

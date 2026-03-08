@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TabNavigator } from './src/navigation/TabNavigator';
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
@@ -13,6 +13,7 @@ import { SplashScreen as CustomSplashScreen } from './src/screens/SplashScreen';
 import { colors } from './src/theme/colors';
 import { NAV_THEME } from './src/theme/theme-provider';
 import { StatusBar } from 'expo-status-bar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { LanguageProvider } from './src/context/LanguageContext';
 import {
@@ -35,6 +36,7 @@ import Animated, {
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createStackNavigator();
+const queryClient = new QueryClient();
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
@@ -103,37 +105,50 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <LanguageProvider>
-        <NavigationContainer theme={NAV_THEME.dark}>
-          <StatusBar style="light" />
-          <Stack.Navigator
-            initialRouteName="Onboarding"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Main" component={TabNavigator} />
-            <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
-            <Stack.Screen name="PlannerLogin" component={PlannerLoginScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <LanguageProvider>
+          <NavigationContainer theme={NAV_THEME.dark}>
+            <StatusBar style="light" />
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+                cardStyle: { backgroundColor: colors.background },
+              }}
+            >
+              <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Main" component={TabNavigator} />
+              <Stack.Screen
+                name="EventDetails"
+                component={EventDetailsScreen}
+                options={{ 
+                  ...TransitionPresets.ModalSlideFromBottomIOS,
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PlannerLogin"
+                component={PlannerLoginScreen}
+                options={{ presentation: 'modal' }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
 
-        {/* Custom Splash Screen Overlay */}
-        {!splashAnimationFinished && (
-          <Animated.View
-            style={[
-              StyleSheet.absoluteFill,
-              animatedSplashStyle,
-              { zIndex: 1000, backgroundColor: '#000000' },
-            ]}
-          >
-            <CustomSplashScreen />
-          </Animated.View>
-        )}
-      </LanguageProvider>
-    </SafeAreaProvider>
+          {/* Custom Splash Screen Overlay */}
+          {!splashAnimationFinished && (
+            <Animated.View
+              style={[
+                StyleSheet.absoluteFill,
+                animatedSplashStyle,
+                { zIndex: 1000, backgroundColor: '#000000' },
+              ]}
+            >
+              <CustomSplashScreen />
+            </Animated.View>
+          )}
+        </LanguageProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }

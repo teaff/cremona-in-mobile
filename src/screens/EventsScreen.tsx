@@ -21,10 +21,8 @@ import { FilterChips } from '../components/FilterChips';
 import { EventCardFeatured } from '../components/EventCardFeatured';
 import { EventCardCompact } from '../components/EventCardCompact';
 import { Event } from '../data/events.mock';
-import {
-  getFeaturedEvents,
-  getUpcomingEvents,
-} from '../services/eventsService';
+import { usePublicEvents } from '@/hooks/useEvents';
+import { Event as SupabaseEvent } from '@/services/events';
 
 const { width } = Dimensions.get('window');
 const FEATURED_CARD_WIDTH = width * 0.85;
@@ -36,30 +34,79 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 export const EventsScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const { events: supabaseEvents, loading: loadingEvents, error } = usePublicEvents();
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('');
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [featured, upcoming] = await Promise.all([
-          getFeaturedEvents(),
-          getUpcomingEvents(),
-        ]);
-        setFeaturedEvents(featured);
-        setUpcomingEvents(upcoming);
-      } catch (error) {
-        console.error('Failed to fetch events', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Function to map Supabase events to UI events
+  const mapSupabaseEventToUi = (event: SupabaseEvent): Event => {
+    const dateObj = new Date(event.start_date);
+    const dayLabel = dateObj.getDate().toString();
+    const monthLabel = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
+    const time = dateObj.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    
+    // Format price label
+    let priceLabel = 'Free';
+    if (event.price !== undefined && event.price !== null) {
+        if (event.price === 0) {
+            priceLabel = 'Free';
+        } else {
+            priceLabel = `${event.price}€`;
+        }
+    }
+    if (event.drink_included) {
+        priceLabel += ' + Drink';
+    }
 
-    fetchData();
-  }, []);
+    return {
+      id: event.id,
+      title: event.title,
+      description: event.description,
+      date: event.start_date,
+      location: event.location,
+      imageUrl: event.image_path || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&q=80', // Fallback image
+      dayLabel,
+      monthLabel,
+      category: event.category || 'Evento', 
+      priceLabel, 
+      isFeatured: false,
+      specialGuest: '',
+      duration: '',
+      time,
+      host: {
+        name: 'Cremona In',
+        subtitle: 'Organizer',
+        avatar: 'https://github.com/shadcn.png',
+        phone: '',
+        email: '',
+        website: '',
+      },
+      coordinates: { lat: 0, lng: 0 },
+    };
+  };
+
+  useEffect(() => {
+    if (!loadingEvents && supabaseEvents) {
+      const uiEvents = supabaseEvents.map(mapSupabaseEventToUi);
+      
+      // Simple logic: first 3 events are featured, rest are upcoming
+      // Or filter by some property if available
+      const featured = uiEvents.slice(0, 3).map(e => ({ ...e, isFeatured: true }));
+      const upcoming = uiEvents.slice(3);
+
+      setFeaturedEvents(featured);
+      setUpcomingEvents(upcoming);
+      setLoading(false);
+    }
+  }, [supabaseEvents, loadingEvents]);
+
+  if (error) {
+    console.error('Error loading events:', error);
+    // You might want to show an error UI here
+  }
 
   const headerIntensity = scrollY.interpolate({
     inputRange: [0, 50],
