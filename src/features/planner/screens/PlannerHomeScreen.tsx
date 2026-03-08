@@ -5,7 +5,6 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  Image,
   StatusBar,
 } from 'react-native';
 import { Text } from '@/components/ui/text';
@@ -15,6 +14,7 @@ import { typography } from '@/theme/typography';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScanBarcode, ChevronRight } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image';
 
 const { width } = Dimensions.get('window');
 
@@ -65,7 +65,7 @@ export const PlannerHomeScreen = () => {
       onPress={() => handleEventPress(item)}
       activeOpacity={0.7}
     >
-      <Image source={{ uri: item.image }} style={styles.cardImage} />
+      <Image source={{ uri: item.image }} style={styles.cardImage} contentFit="cover" />
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle} numberOfLines={1}>
           {item.title}

@@ -1,9 +1,9 @@
 import React, { memo, useState } from 'react';
-import { View, StyleSheet, Image, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { MapPin, Heart } from 'lucide-react-native';
-import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import { Event } from '@/data/events.mock';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
@@ -34,7 +34,7 @@ export const EventCardFeatured = memo(
         ]}
       >
         <View style={styles.imageContainer}>
-          <Image source={{ uri: event.imageUrl }} style={styles.image} />
+          <Image source={{ uri: event.imageUrl }} style={styles.image} contentFit="cover" />
 
           <View style={styles.overlayContainer}>
             <View style={styles.dateBadge}>

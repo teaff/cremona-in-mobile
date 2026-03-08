@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { colors } from '@/theme/colors';
@@ -42,7 +43,7 @@ export const LoginScreen = () => {
           <Image
             source={require('../../../../assets/logo_white_transparent.png')}
             style={styles.logo}
-            resizeMode="contain"
+            contentFit="contain"
           />
           <Text style={styles.title} variant="heading">
             Cremona In

@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Image,
   FlatList,
   TouchableOpacity,
   StatusBar,
@@ -11,6 +10,7 @@ import {
 import { Text } from '@/components/ui/text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search, Bell, Heart } from 'lucide-react-native';
+import { Image } from 'expo-image';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -106,7 +106,7 @@ export const TravelScreen = () => {
   const renderCategoryItem = ({ item }: { item: (typeof CATEGORIES)[0] }) => (
     <View style={styles.categoryItem}>
       <View style={styles.categoryImageContainer}>
-        <Image source={{ uri: item.image }} style={styles.categoryImage} />
+        <Image source={{ uri: item.image }} style={styles.categoryImage} contentFit="cover" />
       </View>
       <Text style={styles.categoryLabel}>{item.label}</Text>
     </View>
@@ -118,7 +118,7 @@ export const TravelScreen = () => {
     item: (typeof TOP_EXPERIENCES)[0];
   }) => (
     <TouchableOpacity style={styles.topExperienceCard} activeOpacity={0.8}>
-      <Image source={{ uri: item.image }} style={styles.topExperienceImage} />
+      <Image source={{ uri: item.image }} style={styles.topExperienceImage} contentFit="cover" />
       <View style={styles.topExperienceContent}>
         <Text style={styles.topExperienceTitle} numberOfLines={2}>
           {item.title}
@@ -189,6 +189,7 @@ export const TravelScreen = () => {
               <Image
                 source={{ uri: item.image }}
                 style={styles.activityImage}
+                contentFit="cover"
               />
               <View style={styles.activityContent}>
                 <Text style={styles.activityTitle}>{item.title}</Text>

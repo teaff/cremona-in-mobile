@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,6 +12,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { Image } from 'expo-image';
 import { colors } from '@/theme/colors';
 
 const { width } = Dimensions.get('window');
@@ -88,7 +89,7 @@ export const SplashScreen = () => {
         <Image
           source={require('../../../../assets/logo_white_transparent.png')}
           style={styles.logo}
-          resizeMode="contain"
+          contentFit="contain"
         />
 
         {/* Custom Loader: 3 Jumping Dots */}

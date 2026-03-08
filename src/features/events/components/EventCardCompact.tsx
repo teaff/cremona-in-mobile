@@ -1,8 +1,9 @@
 import React, { memo, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { MapPin, Heart } from 'lucide-react-native';
+import { Image } from 'expo-image';
 import { Event } from '@/data/events.mock';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
@@ -28,7 +29,7 @@ export const EventCardCompact = ({
     >
       {/* Left Image Section - Full Height */}
       <View style={styles.imageSection}>
-        <Image source={{ uri: event.imageUrl }} style={styles.image} />
+        <Image source={{ uri: event.imageUrl }} style={styles.image} contentFit="cover" />
         {/* Date Badge Overlay */}
         <View style={styles.dateBadge}>
           <Text style={styles.dateDay}>{event.dayLabel}</Text>

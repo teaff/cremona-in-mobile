@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
-  Image,
   Dimensions,
   KeyboardAvoidingView,
   Platform,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,7 +66,7 @@ export const PlannerLoginScreen = () => {
                 <Image
                   source={require('../../../../assets/logo_white_transparent.png')}
                   style={styles.logo}
-                  resizeMode="contain"
+                  contentFit="contain"
                 />
                 <Text style={styles.title} variant="heading">
                   Cremona In

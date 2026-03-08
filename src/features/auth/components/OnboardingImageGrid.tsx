@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,6 +8,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 
 const { width, height } = Dimensions.get('window');
 const COLUMN_WIDTH = width / 3 - 16; // 3 columns with padding
@@ -98,7 +99,7 @@ const Column = ({
   return (
     <Animated.View style={[styles.column, animatedStyle]}>
       {images.map((uri, index) => (
-        <Image key={`${index}-${uri}`} source={{ uri }} style={styles.image} />
+        <Image key={`${index}-${uri}`} source={{ uri }} style={styles.image} contentFit="cover" />
       ))}
     </Animated.View>
   );

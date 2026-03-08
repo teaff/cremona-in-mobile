@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
-  Image,
   Dimensions,
   Platform,
   LayoutAnimation,
@@ -27,6 +26,7 @@ import {
 } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { colors } from '@/theme/colors';
@@ -156,7 +156,7 @@ export const EventDetailsScreen = () => {
       >
         {/* Header Image Section */}
         <View style={styles.headerContainer}>
-          <Image source={{ uri: event.imageUrl }} style={styles.headerImage} />
+          <Image source={{ uri: event.imageUrl }} style={styles.headerImage} contentFit="cover" />
 
           {/* Gradient Overlay for Text Readability */}
           <LinearGradient
@@ -306,7 +306,7 @@ export const EventDetailsScreen = () => {
 
             {/* Main Host Card */}
             <View style={styles.hostCard}>
-              <Image source={{ uri: host.avatar }} style={styles.hostAvatar} />
+              <Image source={{ uri: host.avatar }} style={styles.hostAvatar} contentFit="cover" />
               <View style={styles.hostInfo}>
                 <Text style={styles.hostName}>{host.name}</Text>
                 <Text style={styles.hostSubtitle}>{host.subtitle}</Text>
@@ -366,6 +366,7 @@ export const EventDetailsScreen = () => {
                     : 'https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/10.02,45.13,14,0/400x200?access_token=YOUR_TOKEN',
                 }}
                 style={[StyleSheet.absoluteFill, { opacity: 0.3 }]}
+                contentFit="cover"
               />
               {/* Grid Lines Pattern (Simulated with View if image fails or just as generic background) */}
               <View
@@ -451,7 +452,6 @@ const styles = StyleSheet.create({
   headerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
   },
   gradientOverlay: {
     position: 'absolute',

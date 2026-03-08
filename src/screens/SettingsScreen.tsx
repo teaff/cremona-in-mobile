@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Switch,
   ScrollView,
-  Image,
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   LogOut,
@@ -82,6 +82,7 @@ export const SettingsScreen = () => {
                 uri: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop',
               }}
               style={styles.avatar}
+              contentFit="cover"
             />
             <View style={styles.accountInfo}>
               <Text style={styles.accountName}>Alex Herzoh</Text>
