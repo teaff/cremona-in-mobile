@@ -36,10 +36,10 @@ export const usePublicEvents = () => {
           console.log('✅ Successfully subscribed to events changes');
         }
         if (status === 'CHANNEL_ERROR') {
-          console.error('❌ Realtime channel error:', err);
+          console.log('⚠️ Realtime channel error:', err || 'Unknown error');
         }
         if (status === 'TIMED_OUT') {
-          console.error('❌ Realtime subscription timed out');
+          console.log('⚠️ Realtime subscription timed out');
         }
       });
 

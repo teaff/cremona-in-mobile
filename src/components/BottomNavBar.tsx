@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Home, Ticket, Briefcase, Heart, Settings } from 'lucide-react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
-import { Button } from '@/components/ui/button';
 
 export const BottomNavBar = ({
   state,
@@ -14,35 +12,6 @@ export const BottomNavBar = ({
   navigation,
 }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets();
-
-  const handlePress = (route: any, isFocused: boolean) => {
-    const event = navigation.emit({
-      type: 'tabPress',
-      target: route.key,
-      canPreventDefault: true,
-    });
-
-    if (!isFocused && !event.defaultPrevented) {
-      navigation.navigate(route.name);
-    }
-  };
-
-  const getIcon = (routeName: string, color: string) => {
-    switch (routeName) {
-      case 'Events':
-        return <Home size={24} color={color} />;
-      case 'Tickets':
-        return <Ticket size={24} color={color} />;
-      case 'Travel':
-        return <Briefcase size={24} color={color} />;
-      case 'Favorites':
-        return <Heart size={24} color={color} />;
-      case 'Settings':
-        return <Settings size={24} color={color} />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <BlurView
@@ -61,19 +30,40 @@ export const BottomNavBar = ({
       ]}
     >
       {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
         const isFocused = state.index === index;
         const color = isFocused ? colors.text.primary : colors.text.secondary;
 
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const Icon = options.tabBarIcon;
+
         return (
-          <Button
+          <TouchableOpacity
             key={route.key}
-            variant="ghost"
-            size="icon"
             style={styles.tabItem}
-            onPress={() => handlePress(route, isFocused)}
+            onPress={onPress}
+            activeOpacity={0.7}
           >
-            {getIcon(route.name, color)}
-          </Button>
+            <View
+              style={[
+                styles.iconContainer,
+                isFocused && styles.activeIconContainer,
+              ]}
+            >
+              {Icon && Icon({ color, focused: isFocused, size: 24 })}
+            </View>
+          </TouchableOpacity>
         );
       })}
     </BlurView>
@@ -91,6 +81,19 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   tabItem: {
-    padding: spacing.xs,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  iconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeIconContainer: {
+    // backgroundColor removed as requested
   },
 });

@@ -35,7 +35,7 @@ export const PlannerLoginScreen = () => {
     // Placeholder for planner login logic
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Main' }],
+      routes: [{ name: 'PlannerMain' }],
     });
   };
 

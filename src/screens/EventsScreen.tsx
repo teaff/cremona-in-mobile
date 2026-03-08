@@ -8,6 +8,7 @@ import {
   Dimensions,
   Animated,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -34,12 +35,19 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 export const EventsScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { events: supabaseEvents, loading: loadingEvents, error } = usePublicEvents();
+  const { events: supabaseEvents, loading: loadingEvents, error, refetch } = usePublicEvents();
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }, [refetch]);
 
   // Function to map Supabase events to UI events
   const mapSupabaseEventToUi = (event: SupabaseEvent): Event => {
@@ -150,7 +158,7 @@ export const EventsScreen = () => {
   );
 
   const renderHeader = () => (
-    <View style={{ paddingTop: HEADER_HEIGHT + insets.top }}>
+    <View>
       <FilterChips selectedId={selectedFilter} onSelect={setSelectedFilter} />
 
       <View style={styles.featuredSectionContainer}>
@@ -226,6 +234,15 @@ export const EventsScreen = () => {
       <Animated.FlatList
         data={upcomingEvents}
         keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#FFFFFF" // White for better visibility on dark blur
+            colors={[colors.primary]}
+            progressViewOffset={HEADER_HEIGHT + insets.top + 40} // Push it down further
+          />
+        }
         renderItem={({ item }) => (
           <View style={styles.itemWrapper}>
             <EventCardCompact event={item} onPress={handleEventPress} />
@@ -234,7 +251,10 @@ export const EventsScreen = () => {
         ListHeaderComponent={renderHeader}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: 100 }, // Extra padding for bottom nav
+          { 
+            paddingTop: HEADER_HEIGHT + insets.top,
+            paddingBottom: 100 
+          }, 
         ]}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(

@@ -1,11 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Home, Ticket, Briefcase, Heart, Settings } from 'lucide-react-native';
 import { EventsScreen } from '../screens/EventsScreen';
 import { TicketsScreen } from '../screens/TicketsScreen';
 import { TravelScreen } from '../screens/TravelScreen';
 import { FavoritesScreen } from '../screens/FavoritesScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { BottomNavBar } from '../components/BottomNavBar';
+import { colors } from '@/theme/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,13 +22,45 @@ export const TabNavigator = () => {
           position: 'absolute',
           elevation: 0,
         },
+        tabBarActiveTintColor: colors.text.primary,
+        tabBarInactiveTintColor: colors.text.secondary,
       }}
     >
-      <Tab.Screen name="Events" component={EventsScreen} />
-      <Tab.Screen name="Tickets" component={TicketsScreen} />
-      <Tab.Screen name="Travel" component={TravelScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen 
+        name="Events" 
+        component={EventsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen 
+        name="Tickets" 
+        component={TicketsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Ticket size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen 
+        name="Travel" 
+        component={TravelScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Briefcase size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen 
+        name="Favorites" 
+        component={FavoritesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Heart size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen 
+        name="Settings" 
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
+        }}
+      />
     </Tab.Navigator>
   );
 };
