@@ -6,15 +6,19 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  Modal,
+  Alert,
 } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScanBarcode, ChevronRight } from 'lucide-react-native';
+import { ScanBarcode, ChevronRight, X } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
+import { Camera, CameraView } from 'expo-camera';
+import type { BarcodeScanningResult } from 'expo-camera';
 
 const { width } = Dimensions.get('window');
 
@@ -50,6 +54,8 @@ export const PlannerHomeScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
   const [activeTab, setActiveTab] = useState<'active' | 'done'>('active');
+  const [scannerVisible, setScannerVisible] = useState(false);
+  const [hasScanned, setHasScanned] = useState(false);
 
   const filteredEvents = MOCK_EVENTS.filter(
     (event) => event.status === activeTab
@@ -57,6 +63,42 @@ export const PlannerHomeScreen = () => {
 
   const handleEventPress = (event: any) => {
     navigation.navigate('PlannerParticipants', { event });
+  };
+
+  const handleOpenScanner = async () => {
+    const permission = await Camera.getCameraPermissionsAsync();
+    let granted = permission.granted;
+
+    if (!granted) {
+      const response = await Camera.requestCameraPermissionsAsync();
+      granted = response.granted;
+    }
+
+    if (!granted) {
+      Alert.alert(
+        'Permesso fotocamera richiesto',
+        'Per leggere il QR code devi consentire l’accesso alla fotocamera.'
+      );
+      return;
+    }
+
+    setHasScanned(false);
+    setScannerVisible(true);
+  };
+
+  const handleBarcodeScanned = ({ data }: BarcodeScanningResult) => {
+    if (hasScanned) return;
+    setHasScanned(true);
+    Alert.alert('QR code letto', data, [
+      {
+        text: 'Scansiona ancora',
+        onPress: () => setHasScanned(false),
+      },
+      {
+        text: 'Chiudi',
+        onPress: () => setScannerVisible(false),
+      },
+    ]);
   };
 
   const renderEventCard = ({ item }: { item: typeof MOCK_EVENTS[0] }) => (
@@ -142,13 +184,39 @@ export const PlannerHomeScreen = () => {
       <TouchableOpacity
         style={styles.fab}
         activeOpacity={0.8}
-        onPress={() => {
-          // Open scanner logic here
-          console.log('Open scanner');
-        }}
+        onPress={handleOpenScanner}
       >
         <ScanBarcode size={32} color="#FFFFFF" />
       </TouchableOpacity>
+
+      <Modal
+        visible={scannerVisible}
+        animationType="slide"
+        onRequestClose={() => setScannerVisible(false)}
+      >
+        <View style={styles.scannerContainer}>
+          <CameraView
+            style={styles.camera}
+            facing="back"
+            barcodeScannerSettings={{
+              barcodeTypes: ['qr'],
+            }}
+            onBarcodeScanned={hasScanned ? undefined : handleBarcodeScanned}
+          />
+          <View style={[styles.scannerTopBar, { paddingTop: insets.top + spacing.sm }]}>
+            <TouchableOpacity
+              style={styles.closeScannerButton}
+              onPress={() => setScannerVisible(false)}
+              activeOpacity={0.8}
+            >
+              <X size={20} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+          <View pointerEvents="none" style={styles.scannerFrame}>
+            <View style={styles.scannerFrameBox} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -256,5 +324,41 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
+  },
+  scannerContainer: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
+  camera: {
+    flex: 1,
+  },
+  scannerTopBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: spacing.lg,
+    alignItems: 'flex-end',
+  },
+  closeScannerButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scannerFrame: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scannerFrameBox: {
+    width: width * 0.65,
+    aspectRatio: 1,
+    borderRadius: 24,
+    borderWidth: 3,
+    borderColor: '#FFFFFF',
+    backgroundColor: 'transparent',
   },
 });
